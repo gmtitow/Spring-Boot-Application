@@ -3,13 +3,14 @@ package com.example.demo.maven.service;
 import com.example.demo.maven.model.AbstractEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 public class ACrudServiceImpl<Entity extends AbstractEntity, Repository extends JpaRepository<Entity,Long>> implements CrudService<Entity>{
 
     @Autowired
-    private Repository repository;
+    protected Repository repository;
 
     @Override
     public Entity create(Entity entity) {
