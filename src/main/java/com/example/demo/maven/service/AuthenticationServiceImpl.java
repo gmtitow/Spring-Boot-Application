@@ -3,6 +3,7 @@ package com.example.demo.maven.service;
 import com.example.demo.maven.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
@@ -10,9 +11,14 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     @Autowired
     UserService userService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
-    public User register(User user) {
-        user.setPassword(String.valueOf(user.getPassword().hashCode()));
+    public User register(String login, String password) {
+        User user = new User();
+        user.setPassword(passwordEncoder.encode(password));
+        user.setLogin(login);
         return userService.create(user);
     }
 
@@ -22,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         User user = userService.getByLogin(login);
 
         if(user != null) {
-            if(String.valueOf(password.hashCode()).equals(user.getPassword())) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
         }

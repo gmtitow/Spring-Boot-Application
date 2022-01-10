@@ -4,7 +4,7 @@ import com.example.demo.maven.model.User;
 
 public interface AuthenticationService {
 
-    User register(User user);
+    User register(String login, String password);
 
     User login(String login, String password);
 }

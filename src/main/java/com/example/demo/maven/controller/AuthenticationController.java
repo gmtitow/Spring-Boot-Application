@@ -27,4 +27,13 @@ public class AuthenticationController {
                 ? new ResponseEntity<>(result, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/register")
+    public ResponseEntity<?> register(@RequestParam(value = "login") String login,
+                                   @RequestParam(value = "password") String password) {
+        User result = service.register(login, password);
+        return result != null
+                ? new ResponseEntity<>(result, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
