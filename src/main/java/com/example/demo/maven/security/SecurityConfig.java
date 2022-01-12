@@ -1,5 +1,6 @@
 package com.example.demo.maven.security;
 
+import com.example.demo.maven.USER_ROLES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,23 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JWTFilter jwtFilter;
-
-    public enum Roles {
-        USER ("User"),
-        ADMIN ("Admin");
-
-
-        private String description;
-
-        Roles(String description) {
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-    }
+    private JwtFilter jwtFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/greeting*").hasRole(Roles.USER.getDescription())
-                .antMatchers("/user/*").hasRole(Roles.ADMIN.getDescription())
+                .antMatchers("/greeting*").hasRole(USER_ROLES.User.name())
+                .antMatchers("/users*").hasRole(USER_ROLES.User.name())
                 .antMatchers("/register", "/auth").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
